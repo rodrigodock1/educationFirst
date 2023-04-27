@@ -23,9 +23,9 @@ jobs:
             --stack-name education-first-stack \
             --parameter-overrides \
 	      ImageName=wordpress:latest
-              VpcId=vpc-418ba129 \
-              PublicSubnet1=subnet-55b64b19 \
-              PublicSubnet2=subnet-cb227ea3 \
-              SecurityGroupIds=sg-63b28209 \
+              VpcId=${{ secrets.VPC_ID }} \
+              PublicSubnet1=${{ secrets.PUBLIC_SUBNET_1 }}9 \
+              PublicSubnet2=${{ secrets.PUBLIC_SUBNET_2 }} \
+              SecurityGroupIds=${{ secrets.SECURITY_GROUP_IDS }} \
               TaskCpu=256 \
               TaskMemory=512
