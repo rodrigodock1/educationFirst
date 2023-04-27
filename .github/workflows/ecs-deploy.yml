@@ -19,7 +19,7 @@ jobs:
       - name: Deploy CloudFormation stack
         run: |
           aws cloudformation deploy \
-           --template-file deploy/ecs-deploy.yaml \
+           --template-file deploy/ecs-deploy.yml \
            --stack-name education-first-stack \
            --parameter-overrides \
              ImageName=myimage:latest \
