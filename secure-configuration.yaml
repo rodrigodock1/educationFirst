@@ -24,7 +24,7 @@ jobs:
             --parameter-overrides \
 	      ImageName=wordpress:latest
               VpcId=${{ secrets.VPC_ID }} \
-              PublicSubnet1=${{ secrets.PUBLIC_SUBNET_1 }}9 \
+              PublicSubnet1=${{ secrets.PUBLIC_SUBNET_1 }} \
               PublicSubnet2=${{ secrets.PUBLIC_SUBNET_2 }} \
               SecurityGroupIds=${{ secrets.SECURITY_GROUP_IDS }} \
               TaskCpu=256 \
