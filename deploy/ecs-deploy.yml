@@ -47,10 +47,10 @@ Resources:
       RequiresCompatibilities:
         - "FARGATE"
       ContainerDefinitions:
-        - Name: mycontainer
-          Image: !Ref ImageName
+        - Name: AppToDeploy
+          Image: wordpress
           PortMappings:
-            - ContainerPort: 80
+            - ContainerPort: 443
   Service:
     Type: "AWS::ECS::Service"
     Properties:

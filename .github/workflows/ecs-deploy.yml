@@ -22,7 +22,6 @@ jobs:
            --template-file deploy/ecs-deploy.yml \
            --stack-name education-first-stack \
            --parameter-overrides \
-             ImageName=wordpress:latest \
              VpcId=my-vpc-id \
              PublicSubnet1=my-public-subnet-1 \
              PublicSubnet2=my-public-subnet-2 \
