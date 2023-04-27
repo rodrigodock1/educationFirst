@@ -76,7 +76,7 @@ Resources:
   MyTargetGroup:
     Type: "AWS::ElasticLoadBalancingV2::TargetGroup"
     Properties:
-      Name: !Sub "${AWS::StackName}-target-group"
+      Name: !Sub "${AWS::StackName}-t1"
       Port: 443
       Protocol: "HTTP"
       VpcId: !Ref VpcId
