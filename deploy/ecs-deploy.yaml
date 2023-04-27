@@ -47,19 +47,10 @@ Resources:
       RequiresCompatibilities:
         - "FARGATE"
       ContainerDefinitions:
-        - Name: !Ref "AWS::StackName"
-          Image: "my-docker-image"
+        - Name: mycontainer
+          Image: !Ref ImageName
           PortMappings:
             - ContainerPort: 80
-          Environment:
-            - Name: "MY_ENV_VAR"
-              Value: "my-env-value"
-          LogConfiguration:
-            LogDriver: "awslogs"
-            Options:
-              awslogs-group: "my-log-group"
-              awslogs-region: "us-east-1"
-              awslogs-stream-prefix: "my-ecs"
   Service:
     Type: "AWS::ECS::Service"
     Properties:
@@ -80,7 +71,7 @@ Resources:
             - !Ref PublicSubnet2
       LoadBalancers:
         - ContainerName: !Ref "AWS::StackName"
-          ContainerPort: 80
+          ContainerPort: 443
           TargetGroupArn: !Ref "MyTargetGroup"
   MyTargetGroup:
     Type: "AWS::ElasticLoadBalancingV2::TargetGroup"
