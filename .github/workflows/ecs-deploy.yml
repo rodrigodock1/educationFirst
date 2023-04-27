@@ -23,10 +23,10 @@ jobs:
            --template-file deploy/ecs-deploy.yml \
            --stack-name education-first-stack \
            --parameter-overrides \
-             VpcId=my-vpc-id \
-             PublicSubnet1=my-public-subnet-1 \
-             PublicSubnet2=my-public-subnet-2 \
-             SecurityGroupIds=my-security-group-ids \
+             VpcId=${{ secrets.VPC_ID }} \
+             PublicSubnet1=${{ secrets.PUBLIC_SUBNET_1 }} \
+             PublicSubnet2=${{ secrets.PUBLIC_SUBNET_2 }} \
+             SecurityGroupIds=${{ secrets.SECURITY_GROUP_IDS }} \
              TaskCpu=256 \
              TaskMemory=512 \
            --capabilities CAPABILITY_NAMED_IAM
