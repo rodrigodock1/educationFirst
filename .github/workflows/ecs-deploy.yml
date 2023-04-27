@@ -28,3 +28,9 @@ jobs:
              SecurityGroupIds=my-security-group-ids \
              TaskCpu=256 \
              TaskMemory=512
+	- name: Deploy to AWS CloudFormation
+          uses: aws-actions/aws-cloudformation-deploy@v1
+          with:
+            stack-name: my-stack-name
+            template-file: ./my-template.yaml
+            capabilities: CAPABILITY_NAMED_IAM
