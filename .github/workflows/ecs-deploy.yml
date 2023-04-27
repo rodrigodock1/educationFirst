@@ -19,13 +19,13 @@ jobs:
       - name: Deploy CloudFormation stack
         run: |
           aws cloudformation deploy \
-            --template-file deploy/ecs-deploy.yaml \
-            --stack-name education-first-stack \
-            --parameter-overrides \
-	            ImageName=wordpress:latest \
-              VpcId=vpc-418ba129 \
-              PublicSubnet1=subnet-55b64b19 \
-              PublicSubnet2=subnet-cb227ea3 \
-              SecurityGroupIds=sg-63b28209 \
-              TaskCpu=256 \
-              TaskMemory=512
+           --template-file deploy/ecs-deploy.yaml \
+           --stack-name education-first-stack \
+           --parameter-overrides \
+             ImageName=myimage:latest \
+             VpcId=my-vpc-id \
+             PublicSubnet1=my-public-subnet-1 \
+             PublicSubnet2=my-public-subnet-2 \
+             SecurityGroupIds=my-security-group-ids \
+             TaskCpu=256 \
+             TaskMemory=512
