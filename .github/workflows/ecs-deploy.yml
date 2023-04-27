@@ -16,6 +16,7 @@ jobs:
           aws-access-key-id: ${{ secrets.AWS_ACCESS_KEY_ID }}
           aws-secret-access-key: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
           aws-region: us-east-1
+          capabilities: CAPABILITY_NAMED_IAM
       - name: Deploy CloudFormation stack
         run: |
           aws cloudformation deploy \
@@ -28,9 +29,4 @@ jobs:
              SecurityGroupIds=my-security-group-ids \
              TaskCpu=256 \
              TaskMemory=512
-	- name: Deploy to AWS CloudFormation
-          uses: aws-actions/aws-cloudformation-deploy@v1
-          with:
-            stack-name: my-stack-name
-            template-file: ./my-template.yaml
-            capabilities: CAPABILITY_NAMED_IAM
+           --capabilities CAPABILITY_NAMED_IAM
