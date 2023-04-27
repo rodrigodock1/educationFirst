@@ -1,0 +1,31 @@
+name: Deploy ECS service
+on:
+  push:
+    branches:
+      - master
+jobs:
+  deploy:
+    name: Deploy
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v2
+      - name: Configure AWS credentials
+        uses: aws-actions/configure-aws-credentials@v1
+        with:
+          aws-access-key-id: ${{ secrets.AWS_ACCESS_KEY_ID }}
+          aws-secret-access-key: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
+          aws-region: us-east-1
+      - name: Deploy CloudFormation stack
+        run: |
+          aws cloudformation deploy \
+            --template-file deploy/ecs-deploy.yml \
+            --stack-name education-first-stack \
+            --parameter-overrides \
+	      ImageName=wordpress:latest
+              VpcId=vpc-418ba129 \
+              PublicSubnet1=subnet-55b64b19 \
+              PublicSubnet2=subnet-cb227ea3 \
+              SecurityGroupIds=sg-63b28209 \
+              TaskCpu=256 \
+              TaskMemory=512

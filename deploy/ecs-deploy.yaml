@@ -1,0 +1,92 @@
+AWSTemplateFormatVersion: "2010-09-09"
+Parameters:
+  VpcId:
+    Type: AWS::EC2::VPC::Id
+    Description: "Secure VPC ID"
+  PublicSubnet1:
+    Type: AWS::EC2::Subnet::Id
+    Description: "Public Subnet 1"
+  PublicSubnet2:
+    Type: AWS::EC2::Subnet::Id
+    Description: "Public Subnet 2"
+  SecurityGroupIds:
+    Type: List<AWS::EC2::SecurityGroup::Id>
+    Description: "Security group IDs for the ECS service"
+  TaskCpu:
+    Type: Number
+    Default: 256
+    Description: "The number of CPU units to reserve for the task"
+  TaskMemory:
+    Type: Number
+    Default: 512
+    Description: "The amount of memory to reserve for the task (in MiB)"
+Resources:
+  TaskExecutionRole:
+    Type: "AWS::IAM::Role"
+    Properties:
+      RoleName: !Sub "${AWS::StackName}-task-execution-role"
+      AssumeRolePolicyDocument:
+        Version: "2012-10-17"
+        Statement:
+          - Effect: "Allow"
+            Principal:
+              Service:
+                - "ecs-tasks.amazonaws.com"
+            Action:
+              - "sts:AssumeRole"
+      ManagedPolicyArns:
+        - "arn:aws:iam::aws:policy/service-role/AmazonECSTaskExecutionRolePolicy"
+  TaskDefinition:
+    Type: "AWS::ECS::TaskDefinition"
+    Properties:
+      Family: !Ref "AWS::StackName"
+      Cpu: !Ref TaskCpu
+      Memory: !Ref TaskMemory
+      ExecutionRoleArn: !Ref TaskExecutionRole
+      NetworkMode: "awsvpc"
+      RequiresCompatibilities:
+        - "FARGATE"
+      ContainerDefinitions:
+        - Name: !Ref "AWS::StackName"
+          Image: "my-docker-image"
+          PortMappings:
+            - ContainerPort: 80
+          Environment:
+            - Name: "MY_ENV_VAR"
+              Value: "my-env-value"
+          LogConfiguration:
+            LogDriver: "awslogs"
+            Options:
+              awslogs-group: "my-log-group"
+              awslogs-region: "us-east-1"
+              awslogs-stream-prefix: "my-ecs"
+  Service:
+    Type: "AWS::ECS::Service"
+    Properties:
+      Cluster: !Ref "AWS::StackName"
+      ServiceName: !Ref "AWS::StackName"
+      TaskDefinition: !Ref TaskDefinition
+      LaunchType: "FARGATE"
+      DesiredCount: 1
+      DeploymentConfiguration:
+        MaximumPercent: 200
+        MinimumHealthyPercent: 100
+      NetworkConfiguration:
+        AwsvpcConfiguration:
+          AssignPublicIp: "DISABLED"
+          SecurityGroups: !Ref SecurityGroupIds
+          Subnets:
+            - !Ref PublicSubnet1
+            - !Ref PublicSubnet2
+      LoadBalancers:
+        - ContainerName: !Ref "AWS::StackName"
+          ContainerPort: 80
+          TargetGroupArn: !Ref "MyTargetGroup"
+  MyTargetGroup:
+    Type: "AWS::ElasticLoadBalancingV2::TargetGroup"
+    Properties:
+      Name: !Sub "${AWS::StackName}-target-group"
+      Port: 443
+      Protocol: "HTTP"
+      VpcId: !Ref VpcId
+
