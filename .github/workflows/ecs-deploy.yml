@@ -17,6 +17,7 @@ jobs:
           aws-secret-access-key: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
           aws-region: us-east-1
           capabilities: CAPABILITY_NAMED_IAM
+          permissions-boundary: arn:aws:iam::aws:policy/AmazonECS_FullAccess
       - name: Deploy CloudFormation stack
         run: |
           aws cloudformation deploy \
