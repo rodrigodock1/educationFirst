@@ -28,5 +28,5 @@ jobs:
              PublicSubnet2=my-public-subnet-2 \
              SecurityGroupIds=my-security-group-ids \
              TaskCpu=256 \
-             TaskMemory=512
+             TaskMemory=512 \
            --capabilities CAPABILITY_NAMED_IAM
